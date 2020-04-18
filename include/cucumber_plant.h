@@ -3,13 +3,21 @@
 #include "SFML/Graphics/Color.hpp"
 
 
-class CucumberPlant:public PlantBase
+class CucumberPlant : public PlantBase
 {
 public:
     //Constructor
     CucumberPlant(){
-        //Sets variables for the tomato plant
-        set(7.5, sf::Color(60, 153, 55), 1.5, "Cucumber");
+        //When the class is initiated, it sets all of the values
+        width = 7.5;
+        color = sf::Color(60, 153, 55);
+        growth_rate = 15.0;
+        plantName = "Cucumber";
+    }
+
+    virtual void PlantGraphicsSpecific() {
+    cout << "Tomato Plant PlantGraphics" << endl;
+        //If the plant height is taller than where the branch appears
     }
 };
 
