@@ -27,7 +27,7 @@ namespace Greenhouse{
     //Vector of smart pointer allows us to access the derived class of the base :)
     vector<PlantBase*> plants; //Plants in greenhouse
 }
-using namespace Greenhouse; //Use the namspace, so we don't have to write "Greenhouse::" in front of every variable
+using namespace Greenhouse; //Use the namespace, so we don't have to write "Greenhouse::" in front of every variable
 
 Soil soil;
 
@@ -68,6 +68,7 @@ void Update(sf::Time dt){
 
 #pragma region ImGui
 
+// Add a plant to the greenhouse
 void AddPlant(string className){ //Plant class as argument (Ex. TomatoPlant)
     cout << "Added plant: " << className << endl;
     //ass method to create the plant object.
@@ -105,7 +106,6 @@ void DrawPlants(sf::RenderWindow &window){
         window.draw(stalk);
         //Draw additional graphics
         for(sf::RectangleShape &graphic : p->plantRectangleGraphics){
-            cout <<"drawing rect graphics" << endl;
             window.draw(graphic);
         }
         //Draw additional graphics
@@ -192,8 +192,6 @@ void ImGuiMenus(){
 
 int main(int argc, char const *argv[])
 {
-
-
     //Setup PlantsAvailable Vector
     SetupPlants();
 

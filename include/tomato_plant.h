@@ -83,7 +83,7 @@ TomatoPlant::TomatoPlant(){
     //When the class is initiated, it sets all of the values
     width = 10.0;
     color = sf::Color(78, 204, 71);
-    growth_rate = 10.0;
+    growth_rate = 10.0; 
     max_height = 100;
     plantName = "Tomato";
     grow_right = rand() & 1;

@@ -8,6 +8,7 @@ using namespace std;
 class PlantBase
 {
 protected:
+    //All plant variables in base class
     string plantName = "Plant";
 
     float height{10.0};
@@ -55,8 +56,8 @@ public:
 
 //Grow function. Uses secondsPerDay as argument, and seconds since last update
 //Growth_rate / secondsPerDay to calculate how much to grow each update
-void PlantBase::grow(float secondsPerDay, float seconds){
-    height = height + (seconds * (growth_rate/secondsPerDay));
+void PlantBase::grow(float secondsPerDay, float deltaTime){
+    height = height + (deltaTime * (growth_rate/secondsPerDay));
     if(height > max_height)
         height = max_height;
 }
