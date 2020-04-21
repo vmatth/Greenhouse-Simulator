@@ -1,19 +1,82 @@
 #pragma once
 
-
 #include <iostream>
+#include <tomato_graphics.h>
 #include <tomato_branch.h>
-#include "SFML/Graphics/Color.hpp"
+
+using namespace sf;
 
 
 class TomatoPlant : public PlantBase
 {
 private:
-    bool grow_branches = false; //Turns true when a certain height is met
-    const float height_for_growth = 30; //Plant height when branches can start growing
-    float next_branch_y = 20; //The y-position where the next branch will appear
-    const float distance_between_each_branch = 10; //y distance between each branch
-    bool grow_right = true; //Determines which side the branch will grow on. false = left
+    //All plant variables in base class
+    string plantName = "Tomato";
+
+    float height = 10.0;
+    float width = 10.0;
+    float max_height = 100.0;
+    int num_fruits = 0;
+    double growth_rate = 10.0; //Height growth per day
+
+    Vector2f position; //Planted position
+    TomatoGraphics graphics;
+    TomatoBranch branches;
+public:
+    // Get
+    string getName() override { return plantName; }
+
+    //Set
+    void setPosition(Vector2f pos) override { position = pos; }
+
+    // Functions
+    void grow(float, float) override;
+    void draw(RenderWindow &window) override;
+};
+
+void TomatoPlant::grow(float secondsPerDay, float deltaTime){
+    height = height + (deltaTime * (growth_rate/secondsPerDay));
+    if(height > max_height)
+        height = max_height;
+    branches.grow(secondsPerDay, deltaTime, height, width, position);
+}
+
+void TomatoPlant::draw(RenderWindow &window){
+    graphics.draw(window, width, height, position, branches.GetBranches());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*#pragma once
+
+
+#include <iostream>
+#include <tomato_branch.h>
+#include "SFML/Graphics/Color.hpp"*/
+
+/*
+class TomatoPlant : public PlantBase
+{
+private:
+    //All plant variables in base class
+    string plantName = "Plant";
+
+    float height{10.0};
+    float width{1.0};
+    float max_height{40.0};
+    int num_fruits{0};
+    double growth_rate = 0; //Height growth per day
+
 public:
     //Constructor
     TomatoPlant();
@@ -23,49 +86,19 @@ public:
 
     void AddBranch();
 
+    void grow(float, float);
+
     void GrowBranch(float, float);
 
     vector<TomatoBranch> branches; //Vector of the branches
-};
-
-void TomatoPlant::AddBranch(){
-    //Check for plant height
-    if(height > height_for_growth)
-        grow_branches = true;
-    //If can grow branches
-    if(grow_branches){
-        if(height > next_branch_y + distance_between_each_branch){
-            cout << "Add branch!" << endl;
-            //Make shape
-            sf::RectangleShape b{sf::Vector2f{15.0, 5.0}};
-            sf::Vector2f branchPos = position - sf::Vector2f(0, next_branch_y);
-            if(grow_right)  branchPos += sf::Vector2f(width, 0); //If branch is on right, offset the branch
-            b.setPosition(branchPos); 
-            //Push to graphics vector. The branch class changes the graphic when growing
-            
-            int side = 1; if (grow_right == false) side = -1;
-            //Create branch class with values from this class
-            TomatoBranch tomatoBranch(side, 
-                                      branchPos,
-                                      plantRectangleGraphics.size());
-            branches.push_back(tomatoBranch);
-
-            b.setFillColor(tomatoBranch.getColor());
-            plantRectangleGraphics.push_back(b);
-
-            //Setup variables for next branch
-            grow_right = !grow_right; //Flip bool
-            next_branch_y = next_branch_y + distance_between_each_branch;
-        }
-    }
 }
 
 //Grows branches in the branches vector
 //Uses secondsPerDay and seconds as arguments
-void TomatoPlant::GrowBranch(float secondsPerDay, float seconds){
+void TomatoPlant::GrowBranch(float secondsPerDay, float deltaTime){
     if(branches.size() == 0) return;
     for(TomatoBranch &b : branches){
-        b.grow(secondsPerDay, seconds);
+        b.grow(secondsPerDay, deltaTime);
         plantRectangleGraphics[b.getIndex()].setSize(sf::Vector2f(b.getLength(), b.getWidth()));
     }
 }
@@ -78,6 +111,12 @@ void TomatoPlant::PlantGraphicsSpecific(float spd, float s){
     //Grow branches that have already appeared
     GrowBranch(spd, s);
 }
+void TomatoPlant::grow(float secondsPerDay, float deltaTime){
+    height = height + (deltaTime * (growth_rate/secondsPerDay));
+    if(height > max_height)
+        height = max_height;
+}
+
 //Constructor
 TomatoPlant::TomatoPlant(){
     //When the class is initiated, it sets all of the values
@@ -89,6 +128,6 @@ TomatoPlant::TomatoPlant(){
     grow_right = rand() & 1;
 
 }
-
+*/
 
 
