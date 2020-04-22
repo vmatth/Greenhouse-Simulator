@@ -8,6 +8,8 @@ set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/libs/imgui)
 add_subdirectory(libs/imgui-sfml)
 
 include_directories(include 
+                    include/Cucumber
+                    include/Tomato
                     libs/SFML/include 
                     libs/imgui 
                     libs/imgui-sfml)

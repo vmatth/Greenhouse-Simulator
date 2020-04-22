@@ -1,8 +1,8 @@
 #pragma once
 
-#include <fruit.h>
+#include <tomato_fruit.h>
 
-class Branch
+class TomatoBranch
 {
 private:
     float length = 0.0;
@@ -12,19 +12,19 @@ private:
     int side = 1; //Left = -1, Right = 1
     Vector2f position;
     
-    Fruit fruit;
+    TomatoFruit fruit;
 public:
-    Branch(float, float, float, int, Vector2f, float, float, float, bool);
+    TomatoBranch(int, Vector2f);
 
     void grow(float, float);
     float GetWidth() { return width; }
     float GetLength() { return length; }
     Vector2f GetPosition() { return position; }
-    Fruit GetFruit() { return fruit; }
+    TomatoFruit GetFruit() { return fruit; }
 };
 
 
-void Branch::grow(float secondsPerDay, float deltaTime){
+void TomatoBranch::grow(float secondsPerDay, float deltaTime){
     length = length + (deltaTime * (growth_rate/secondsPerDay)) * side;
     if(abs(length) > max_length){
         length = max_length * side;  
@@ -33,13 +33,8 @@ void Branch::grow(float secondsPerDay, float deltaTime){
     }
 }
 
-Branch::Branch(float Width, float Max_length, float Growth_rate, int s, Vector2f pos, float fruit_width, float fruit_max_size, float fruit_growth_rate, bool round){
-    width = Width;
-    max_length = Max_length;
-    growth_rate = Growth_rate;
+TomatoBranch::TomatoBranch(int s, Vector2f pos){
     side = s;
     position = pos;
-
-    fruit.Setup(fruit_max_size, fruit_width, fruit_growth_rate, round);
 }
 
