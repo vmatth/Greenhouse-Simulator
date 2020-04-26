@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fruit.h>
+#include <leaves.h>
 
 class Branch
 {
@@ -13,6 +14,7 @@ private:
     Vector2f position;
     
     Fruit fruit;
+    Leaves leaves;
 public:
     Branch(float, float, float, int, Vector2f, float, float, float, bool);
 
@@ -30,6 +32,7 @@ void Branch::grow(float secondsPerDay, float deltaTime){
         length = max_length * side;  
         fruit.grow(secondsPerDay, deltaTime);
         fruit.SetPosition(position, length);
+        leaves.grow(secondsPerDay, deltaTime);
     }
 }
 
