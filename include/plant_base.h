@@ -16,9 +16,8 @@ public:
     virtual void setPosition(Vector2f) = 0;
 
     // Functions
-    virtual void grow(float, float) = 0;
+    virtual void grow(float, float, float) = 0;
     virtual void draw(RenderWindow &window) = 0;
-   // virtual std::unique_ptr<PlantBase> clone() = 0;
 };
 
 

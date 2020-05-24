@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cucumber_graphics.h>
+#include <soil.h>
 
 using namespace sf;
 
@@ -21,6 +22,7 @@ private:
     Vector2f position; //Planted position
     CucumberGraphics graphics;
     BranchGrower grower;
+
 public:
     // Get
     string getName() override { return plantName; }
@@ -29,14 +31,14 @@ public:
     void setPosition(Vector2f pos) override { position = pos; }
 
     // Functions
-    void grow(float, float) override;
+    void grow(float, float, float) override;
     void draw(RenderWindow &window) override;
 
     CucumberPlant();
 };
 
-void CucumberPlant::grow(float secondsPerDay, float deltaTime){
-    height = height + (deltaTime * (growth_rate/secondsPerDay));
+void CucumberPlant::grow(float secondsPerDay, float deltaTime, float soilQuality){
+    height = height + (deltaTime * (growth_rate/secondsPerDay) * soilQuality);
     if(height > max_height) height = max_height;
     grower.grow(secondsPerDay, deltaTime, height, width, position);
 }
@@ -44,6 +46,7 @@ void CucumberPlant::grow(float secondsPerDay, float deltaTime){
 void CucumberPlant::draw(RenderWindow &window){
     graphics.draw(window, width, height, position, grower.GetBranches());
 }
+
 
 CucumberPlant::CucumberPlant(){
     //Setup values for how tomato growth should be

@@ -32,14 +32,14 @@ public:
     void setPosition(Vector2f pos) override { position = pos; }
 
     // Functions
-    void grow(float, float) override;
+    void grow(float, float, float) override;
     void draw(RenderWindow &window) override;
 
     TomatoPlant();
 };
 
-void TomatoPlant::grow(float secondsPerDay, float deltaTime){
-    height = height + (deltaTime * (growth_rate/secondsPerDay));
+void TomatoPlant::grow(float secondsPerDay, float deltaTime, float soilQuality){
+    height = height + (deltaTime * (growth_rate/secondsPerDay) * soilQuality);
     if(height > max_height) height = max_height;
     grower.grow(secondsPerDay, deltaTime, height, width, position);
 }

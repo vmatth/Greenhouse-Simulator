@@ -24,7 +24,7 @@ namespace Greenhouse{
     float et; // Elapsed time
     int days = 0;
     float secondsPerDay = 10;
-    float nextPlantPosX = 100.0; //x-position of the next plant to be added
+    float nextPlantPosX = 200.0; //x-position of the next plant to be added
 
     //Defines a vector of pointers to all plants available in the greenhouse
     vector<unique_ptr<PlantBase>> plantsAvailable; //All plant classes
@@ -46,9 +46,14 @@ void SetupPlants(){
 
 #pragma region Greenhouse Functions
 
+void SoilQuality(Time dt){
+    soil.useNPK(dt.asSeconds(), secondsPerDay);
+}
+
 void GrowPlants(Time dt){
     for(unique_ptr<PlantBase> &p : plants){
-        p->grow(secondsPerDay, dt.asSeconds());
+        SoilQuality(dt);
+        p->grow(secondsPerDay, dt.asSeconds(), soil.getSoilQuality());      
     }
 }
 
@@ -107,15 +112,44 @@ void DrawBackground(RenderWindow &window){
     float g = g_max/2 * sin(2*M_PI/secondsPerDay * et) + (g_max/2);
     float b = b_max/2 * sin(2*M_PI/secondsPerDay * et) + (b_max/2);
     window.clear(Color(r, g, b));
+
+    //Draw House Background
+    Color bgCol = Color(240, 240, 240);
+    RectangleShape wall1{Vector2f{200, 800}};
+    RectangleShape wall2{Vector2f{200, 800}};
+    RectangleShape wall3{Vector2f{400, 200}};
+    RectangleShape wall4{Vector2f{400, 200}};
 }
 
 void DrawEnvironment(RenderWindow &window){
     //Soil
-    RectangleShape soil{Vector2f{800, 50}};
-    soil.setPosition(Vector2f{0, 600-50});
+    RectangleShape soil{Vector2f{500, 50}};
+    soil.setPosition(Vector2f{150, 600-50});
     soil.setFillColor(Color(204, 127, 55));
     //Draw
     window.draw(soil);
+
+    Color bgCol = Color(240, 240, 240);
+    RectangleShape bottom{Vector2f(500, 30)};
+    bottom.setPosition(Vector2f{150, 570});
+    bottom.setFillColor(bgCol);
+
+    RectangleShape left{Vector2f(30, 250)};
+    left.setPosition(Vector2f{120, 350});
+    left.setFillColor(bgCol);
+
+    RectangleShape right{Vector2f(30, 250)};
+    right.setPosition(Vector2f{650, 350});
+    right.setFillColor(bgCol);
+
+    RectangleShape top{Vector2f(560, 30)};
+    top.setPosition(Vector2f{120, 320});
+    top.setFillColor(bgCol);
+
+    window.draw(bottom);
+    window.draw(left);
+    window.draw(right);
+    window.draw(top);
 }
 
 void ImGuiMenus(){
@@ -147,11 +181,9 @@ void ImGuiMenus(){
 
     //Soil Statistics menu
     ImGui::Begin("Soil values");
-    ImGui::Text("Phosfor: %f", soil.getPhosforlevel());
-    ImGui::Text("Potassium: %f", soil.getPotassiumlevel());
-    ImGui::Text("Nitrate: %f", soil.getNitratelevel());
-    ImGui::Text("Soil Moisture Level: %f", soil.getMoisturelevel());
-    ImGui::Text("Soil Amount (Liter): %f", soil.getSoilAmount());
+    ImGui::Text("Soil Quality: %f", soil.getSoilQuality());
+    if(ImGui::Button("Fertilize"))
+        soil.fertilize();
     ImGui::End();
 }
 #pragma endregion
